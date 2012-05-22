@@ -2,12 +2,12 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://yoursite.com
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
+url: http://nzdravevski.github.com
+title: Nikola Zdravevski's Blog
+subtitle: I'm that guy who brought an 21.5'' iMac all the way from Jersey to Macedonia as carry-on baggage.
+author: Nikola Zdravevski
 simple_search: http://google.com/search
-description:
+description: Trying to share Objective-C thinking 
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
