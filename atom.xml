@@ -4,7 +4,7 @@
   <title><![CDATA[Nikola Zdravevski's Blog]]></title>
   <link href="http://nzdravevski.github.com/atom.xml" rel="self"/>
   <link href="http://nzdravevski.github.com/"/>
-  <updated>2012-05-26T16:28:44+02:00</updated>
+  <updated>2012-05-26T19:18:30+02:00</updated>
   <id>http://nzdravevski.github.com/</id>
   <author>
     <name><![CDATA[Nikola Zdravevski]]></name>
@@ -12,14 +12,5 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Initial post]]></title>
-    <link href="http://nzdravevski.github.com/blog/2012/05/24/initial-post/"/>
-    <updated>2012-05-24T21:55:00+02:00</updated>
-    <id>http://nzdravevski.github.com/blog/2012/05/24/initial-post</id>
-    <content type="html"><![CDATA[<p>Just testing things out.</p>
-]]></content>
-  </entry>
   
 </feed>
