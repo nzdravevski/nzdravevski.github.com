@@ -12,7 +12,7 @@ To make things simpler, we will obey to the WCF convention for serialization of 
 
 Of course, everything that is communicated via JSON has to be a string value.
 
-1. WCF .NET side code
+1. WCF .NET Server side code
 ===
 Example `Event` class that represents data about events. Instances of this class are sent via `WebInvoke` methods to the iOS client application. Only the attributes of type `DateTime` are showed.
 
@@ -41,7 +41,7 @@ That's it. This (plus additional simple return code at the `WebInvoke` methods t
 
 That practically means that we ourselves should do the proper formatting when sending `NSDate` on the iOS side, and also parse the consumed JSON string from the WCF side.
 
-2. iOS side code
+2. iOS Client side code
 ===
 First, I am providing the method that does the conversion (parsing) of a `DateTime` (.NET) object serialized as JSON by WCF to a `NSDate` object. Have the format in mind ["/Date(1292851800000+0100)/"] before looking at the code. My practice here is *always to keep date and time objects in their UTC time zone on the server and do the needed time zone calculations on the client side*. That practically means that time zone offsets will be added here, on the client side parsing code.
 
