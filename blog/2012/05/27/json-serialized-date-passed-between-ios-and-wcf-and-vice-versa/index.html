@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Nikola Zdravevski's Blog</title>
+  <title>JSON serialized Date passed between iOS and WCF (and vice versa) - Nikola Zdravevski's Blog</title>
   <meta name="author" content="Nikola Zdravevski">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://nzdravevski.github.com">
+  <link rel="canonical" href="http://nzdravevski.github.com/blog/2012/05/27/json-serialized-date-passed-between-ios-and-wcf-and-vice-versa">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -62,15 +62,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012/05/27/json-serialized-date-passed-between-ios-and-wcf-and-vice-versa/">JSON Serialized Date Passed Between iOS and WCF (and Vice Versa)</a></h1>
+      <h1 class="entry-title">JSON Serialized Date Passed Between iOS and WCF (and Vice Versa)</h1>
     
     
       <p class="meta">
@@ -93,7 +90,7 @@
   </header>
 
 
-  <div class="entry-content"><p>Knowing that JSON still does not support Date objects, one can have a really painful experience sending and receiving date and time values through the wire. Following here is an example of how such a functionality can be achieved easily having .NET 4.0 WCF Web Service on one side and iOS 5.0 application on the other.</p>
+<div class="entry-content"><p>Knowing that JSON still does not support Date objects, one can have a really painful experience sending and receiving date and time values through the wire. Following here is an example of how such a functionality can be achieved easily having .NET 4.0 WCF Web Service on one side and iOS 5.0 application on the other.</p>
 
 <p>To make things simpler, we will obey to the WCF convention for serialization of <code>DateTime</code> objects which declares that such objects will be serialized as: <code>"/Date(1292851800000+0100)/"</code> or <code>"\/Date(1292851800000-0100)\/"</code> where 1292851800000 is milliseconds since 1970 and +0100 is the timezone. That way, we don&#8217;t have to touch anything on the WCF side and use the built in JSON parser in .NET accordingly.</p>
 
@@ -250,18 +247,57 @@
 
 <p>I hope this code snippets will do any help to some of you guys.</p>
 </div>
+
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Nikola Zdravevski</span></span>
+
+      
+
+
+
+
+
+
+
+
   
 
 
-    </article>
+<time datetime="2012-05-27T20:00:00+02:00" pubdate data-updated="true">May 27<span>th</span>, 2012</time>
+      
+
+<span class="categories">
   
-  <div class="pagination">
+    <a class='category' href='/blog/categories/-net-4-0-wcf/'>.NET 4.0 WCF</a>, <a class='category' href='/blog/categories/datetime/'>DateTime</a>, <a class='category' href='/blog/categories/http/'>HTTP</a>, <a class='category' href='/blog/categories/json/'>JSON</a>, <a class='category' href='/blog/categories/nsdate/'>NSDate</a>, <a class='category' href='/blog/categories/parsing/'>Parsing</a>, <a class='category' href='/blog/categories/web-service/'>Web Service</a>, <a class='category' href='/blog/categories/ios-5/'>iOS 5</a>
+  
+</span>
+
+
+    </p>
     
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://nzdravevski.github.com/blog/2012/05/27/json-serialized-date-passed-between-ios-and-wcf-and-vice-versa/" data-via="" data-counturl="http://nzdravevski.github.com/blog/2012/05/27/json-serialized-date-passed-between-ios-and-wcf-and-vice-versa/" >Tweet</a>
+  
+  
+  
 </div>
+
+    
+    <p class="meta">
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
 <aside class="sidebar">
   
     <section>
@@ -282,6 +318,7 @@
 
   
 </aside>
+
 
     </div>
   </div>

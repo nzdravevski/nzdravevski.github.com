@@ -4,7 +4,7 @@
   <title><![CDATA[Nikola Zdravevski's Blog]]></title>
   <link href="http://nzdravevski.github.com/atom.xml" rel="self"/>
   <link href="http://nzdravevski.github.com/"/>
-  <updated>2012-05-26T19:18:30+02:00</updated>
+  <updated>2012-05-27T21:33:44+02:00</updated>
   <id>http://nzdravevski.github.com/</id>
   <author>
     <name><![CDATA[Nikola Zdravevski]]></name>
@@ -12,5 +12,169 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[JSON serialized Date passed between iOS and WCF (and vice versa)]]></title>
+    <link href="http://nzdravevski.github.com/blog/2012/05/27/json-serialized-date-passed-between-ios-and-wcf-and-vice-versa/"/>
+    <updated>2012-05-27T20:00:00+02:00</updated>
+    <id>http://nzdravevski.github.com/blog/2012/05/27/json-serialized-date-passed-between-ios-and-wcf-and-vice-versa</id>
+    <content type="html"><![CDATA[<p>Knowing that JSON still does not support Date objects, one can have a really painful experience sending and receiving date and time values through the wire. Following here is an example of how such a functionality can be achieved easily having .NET 4.0 WCF Web Service on one side and iOS 5.0 application on the other.</p>
+
+<p>To make things simpler, we will obey to the WCF convention for serialization of <code>DateTime</code> objects which declares that such objects will be serialized as: <code>"/Date(1292851800000+0100)/"</code> or <code>"\/Date(1292851800000-0100)\/"</code> where 1292851800000 is milliseconds since 1970 and +0100 is the timezone. That way, we don&#8217;t have to touch anything on the WCF side and use the built in JSON parser in .NET accordingly.</p>
+
+<p>Of course, everything that is communicated via JSON has to be a string value.</p>
+
+<h1>1. WCF .NET side code</h1>
+
+<p>Example <code>Event</code> class that represents data about events. Instances of this class are sent via <code>WebInvoke</code> methods to the iOS client application. Only the attributes of type <code>DateTime</code> are showed.</p>
+
+<figure class='code'><figcaption><span>Event.cs</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='c#'><span class='line'><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+</span><span class='line'><span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+</span><span class='line'><span class="k">using</span> <span class="nn">System.Linq</span><span class="p">;</span>
+</span><span class='line'><span class="k">using</span> <span class="nn">System.Web</span><span class="p">;</span>
+</span><span class='line'><span class="k">using</span> <span class="nn">System.Runtime.Serialization</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">namespace</span> <span class="nn">RESTfulWCF</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="na">    [DataContract]</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">class</span> <span class="nc">Event</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'><span class="na">        [DataMember]</span>
+</span><span class='line'>        <span class="k">public</span> <span class="n">DateTime</span> <span class="n">dateFrom</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="na">        [DataMember]</span>
+</span><span class='line'>        <span class="k">public</span> <span class="n">DateTime</span> <span class="n">dateTo</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&#8217;s it. This (plus additional simple return code at the <code>WebInvoke</code> methods that are responsible for the actual JSON responses)  provide <code>DateTime</code> serialization in the format previously showed but <strong>for the <code>set</code> methods they except input parameters in the same format as well</strong>.</p>
+
+<p>That practically means that we ourselves should do the proper formatting when sending <code>NSDate</code> on the iOS side, and also parse the consumed JSON string from the WCF side.</p>
+
+<h1>2. iOS side code</h1>
+
+<p>First, I am providing the method that does the conversion (parsing) of a <code>DateTime</code> (.NET) object serialized as JSON by WCF to a <code>NSDate</code> object. Have the format in mind [&#8220;/Date(1292851800000+0100)/&#8221;] before looking at the code. My practice here is <em>always to keep date and time objects in their UTC time zone on the server and do the needed time zone calculations on the client side</em>. That practically means that time zone offsets will be added here, on the client side parsing code.</p>
+
+<figure class='code'><figcaption><span>Deserialization of Date Objects</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="o">-</span> <span class="p">(</span><span class="n">NSDate</span> <span class="o">*</span><span class="p">)</span><span class="nl">deserializeJsonDateString:</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">jsonDateString</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">NSInteger</span> <span class="n">offset</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSTimeZone</span> <span class="n">defaultTimeZone</span><span class="p">]</span> <span class="n">secondsFromGMT</span><span class="p">];</span> <span class="c1">//get number of seconds to add or subtract according to the client default time zone </span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSInteger</span> <span class="n">startPosition</span> <span class="o">=</span> <span class="p">[</span><span class="n">jsonDateString</span> <span class="nl">rangeOfString:</span><span class="s">@&quot;(&quot;</span><span class="p">].</span><span class="n">location</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">//start of the date value</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSTimeInterval</span> <span class="n">unixTime</span> <span class="o">=</span> <span class="p">[[</span><span class="n">jsonDateString</span> <span class="nl">substringWithRange:</span><span class="n">NSMakeRange</span><span class="p">(</span><span class="n">startPosition</span><span class="p">,</span> <span class="mi">13</span><span class="p">)]</span> <span class="n">doubleValue</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">;</span> <span class="c1">//WCF will send 13 digit-long value for the time interval since 1970 (millisecond precision) whereas iOS works with 10 digit-long values (second precision), hence the divide by 1000</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">[[</span><span class="n">NSDate</span> <span class="nl">dateWithTimeIntervalSince1970:</span><span class="n">unixTime</span><span class="p">]</span> <span class="nl">dateByAddingTimeInterval:</span><span class="n">offset</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">date</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now follows the code for formatting the <code>NSDate</code> objects in the appropriate format for transmission.</p>
+
+<figure class='code'><figcaption><span>NSDate to JSON date string</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">jsonPostRequestAddEvent</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSDateFormatter</span> <span class="o">*</span><span class="n">formatter</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSDateFormatter</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">formatter</span> <span class="nl">setDateFormat:</span><span class="s">@&quot;Z&quot;</span><span class="p">];</span> <span class="c1">//for getting the timezone part of the date only.</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSString</span> <span class="o">*</span><span class="n">jsonDateFrom</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;/Date(%.0f000%@)/&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">dateFrom</span> <span class="n">timeIntervalSince1970</span><span class="p">],[</span><span class="n">formatter</span> <span class="nl">stringFromDate:</span><span class="n">self</span><span class="p">.</span><span class="n">dateFrom</span><span class="p">]];</span> <span class="c1">//three zeroes at the end of the unix timestamp are added because thats the millisecond part (WCF supports the millisecond precision)</span>
+</span><span class='line'>    <span class="n">NSString</span> <span class="o">*</span><span class="n">jsonDateTo</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;/Date(%.0f000%@)/&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">dateTo</span> <span class="n">timeIntervalSince1970</span><span class="p">],[</span><span class="n">formatter</span> <span class="nl">stringFromDate:</span><span class="n">self</span><span class="p">.</span><span class="n">dateTo</span><span class="p">]];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSArray</span> <span class="o">*</span><span class="n">objects</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSArray</span> <span class="nl">arrayWithObjects:</span><span class="n">jsonDateFrom</span><span class="p">,</span> <span class="n">jsonDateTo</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSArray</span> <span class="o">*</span><span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSArray</span> <span class="nl">arrayWithObjects:</span><span class="s">@&quot;dateFrom&quot;</span><span class="p">,</span> <span class="s">@&quot;dateTo&quot;</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">NSDictionary</span> <span class="o">*</span><span class="n">eventDict</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSDictionary</span> <span class="nl">dictionaryWithObjects:</span><span class="n">objects</span> <span class="nl">forKeys:</span><span class="n">keys</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSDictionary</span> <span class="o">*</span><span class="n">jsonDict</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSDictionary</span> <span class="nl">dictionaryWithObject:</span><span class="n">eventDict</span> <span class="nl">forKey:</span><span class="s">@&quot;myEvent&quot;</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSURL</span> <span class="o">*</span><span class="n">url</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSURL</span> <span class="nl">URLWithString:</span><span class="s">@&quot;http://yourDomain.com/WCFService.svc/addEvent&quot;</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSData</span><span class="o">*</span> <span class="n">jsonData</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSJSONSerialization</span> <span class="nl">dataWithJSONObject:</span><span class="n">jsonDict</span> <span class="nl">options:</span><span class="n">kNilOptions</span> <span class="nl">error:</span><span class="o">&amp;</span><span class="n">error</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//NSLog([[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]); //debug only</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSMutableURLRequest</span> <span class="o">*</span><span class="n">request</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableURLRequest</span> <span class="nl">requestWithURL:</span><span class="n">url</span> <span class="nl">cachePolicy:</span> <span class="n">NSURLRequestReloadIgnoringCacheData</span> <span class="nl">timeoutInterval:</span> <span class="mf">30.f</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">[</span><span class="n">request</span> <span class="nl">setHTTPMethod:</span><span class="s">@&quot;POST&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">request</span> <span class="nl">setValue:</span><span class="s">@&quot;application/json&quot;</span> <span class="nl">forHTTPHeaderField:</span><span class="s">@&quot;Accept&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">request</span> <span class="nl">setValue:</span><span class="s">@&quot;application/json&quot;</span> <span class="nl">forHTTPHeaderField:</span><span class="s">@&quot;Content-Type&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">request</span> <span class="nl">setValue:</span><span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;%d&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">jsonData</span> <span class="n">length</span><span class="p">]]</span> <span class="nl">forHTTPHeaderField:</span><span class="s">@&quot;Content-Length&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">request</span> <span class="nl">setHTTPBody:</span> <span class="n">jsonData</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">self</span><span class="p">.</span><span class="n">urlConnection</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSURLConnection</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithRequest:</span><span class="n">request</span> <span class="nl">delegate:</span><span class="n">self</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">].</span><span class="n">networkActivityIndicatorVisible</span> <span class="o">=</span> <span class="n">YES</span><span class="p">;</span> <span class="c1">//this is important for the UX (User Experience)  </span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I hope this code snippets will do any help to some of you guys.</p>
+]]></content>
+  </entry>
   
 </feed>
