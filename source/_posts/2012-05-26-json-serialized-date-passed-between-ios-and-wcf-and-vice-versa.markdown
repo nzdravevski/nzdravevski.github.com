@@ -96,7 +96,7 @@ Now follows the code for formatting the `NSDate` objects in the appropriate form
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES; //this is important for the UX (User Experience)  
 }
 ```
-Thanks for reading my post, I hope it was helpful. 
+Thanks for reading my post, I hope it was helpful.
 
 
 
