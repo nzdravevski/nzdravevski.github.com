@@ -4,7 +4,7 @@
   <title><![CDATA[Category: .NET 4.0 WCF | Nikola Zdravevski's Blog]]></title>
   <link href="http://nzdravevski.github.com/blog/categories/-net-4-0-wcf/atom.xml" rel="self"/>
   <link href="http://nzdravevski.github.com/"/>
-  <updated>2012-05-27T21:33:44+02:00</updated>
+  <updated>2012-05-27T21:45:04+02:00</updated>
   <id>http://nzdravevski.github.com/</id>
   <author>
     <name><![CDATA[Nikola Zdravevski]]></name>
@@ -24,7 +24,7 @@
 
 <p>Of course, everything that is communicated via JSON has to be a string value.</p>
 
-<h1>1. WCF .NET side code</h1>
+<h1>1. WCF .NET Server side code</h1>
 
 <p>Example <code>Event</code> class that represents data about events. Instances of this class are sent via <code>WebInvoke</code> methods to the iOS client application. Only the attributes of type <code>DateTime</code> are showed.</p>
 
@@ -56,7 +56,7 @@ public class Event
 
 <p>That practically means that we ourselves should do the proper formatting when sending <code>NSDate</code> on the iOS side, and also parse the consumed JSON string from the WCF side.</p>
 
-<h1>2. iOS side code</h1>
+<h1>2. iOS Client side code</h1>
 
 <p>First, I am providing the method that does the conversion (parsing) of a <code>DateTime</code> (.NET) object serialized as JSON by WCF to a <code>NSDate</code> object. Have the format in mind ["/Date(1292851800000+0100)/"] before looking at the code. My practice here is <em>always to keep date and time objects in their UTC time zone on the server and do the needed time zone calculations on the client side</em>. That practically means that time zone offsets will be added here, on the client side parsing code.</p>
 
