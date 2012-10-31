@@ -14,29 +14,29 @@ Following here are some of the distinctive UX features I have found throughout t
 
 1. UIImageView Background Image
 ---
-{% img center /images/posts_images/checkinphoto.png 640 608 UIImageViewBackgroundImage %}
+{% img center /images/posts_images/checkinphoto.PNG 640 608 UIImageViewBackgroundImage %}
 If the user has added a photo to her check in, this photo is shown on the feed as a horizontally scrollable image that hides a girl with a camera in the background.
 
 2. Unique Pull To Refresh Design
 ---
-{% img center /images/posts_images/pulltorefresh.png 640 466 PullToRefreshDesign %}
+{% img center /images/posts_images/pulltorefresh.PNG 640 466 PullToRefreshDesign %}
 We all know the default/Tweetie-like `Pull To Refresh` control that is used widely across iOS apps and that only features text, a direction changing arrow i.e. nothing original and has even become boring nowadays. Exception is the Apple implementation of its very own Pull To Refresh mechanism that can be found in the stock Mail app under iOS 6 and foursquare's Pull To Refresh control. They really did a great job here simply by providing a crown image that is shown only if the user kind of overscrolls the refresh control. Fells good when that mayor crown shows up all of a sudden and totally unexpected.
 
 On this picture one can also notice the great rounded edges on the `UINavigationBar`'s top corners (just below the status bar). I totally like this design.   
 
 3. Custom UISwitch
 ---
-{% img center /images/posts_images/switch.png 640 383 CustomUISwitch %}
+{% img center /images/posts_images/switch.PNG 640 383 CustomUISwitch %}
 This is by far my favorite social network sharing switch. I love it because of its minimal and pure perfection. When the user turns a switch *on* it instantly becomes more vivid simply by tinting itself in the color associated with the social network the switch represents.
 
 4. UITabBarItem Title
 ---
-{% img center /images/posts_images/tabbaritemname.png 218 101 UITabBarItemTitle %}
+{% img center /images/posts_images/tabbaritemname.PNG 218 101 UITabBarItemTitle %}
 `UITabBarItem` names are really important aspect of the app design and should be chosen **very** carefully and wisely because they will be shown at all times the user is using the application. That said, foursquare has chosen a great and original way of naming their user account tab bar item and instead of boring and traditional names like *Profile*, *Account* or *User* they have named their tab bar item after the user's first name. Cool and very user friendly.
 
 5. Venue Likes
 ---
-{% img center /images/posts_images/venuelike.png 640 242 VenueLikes %}
+{% img center /images/posts_images/venuelike.PNG 640 242 VenueLikes %}
 If the user has liked a venue and is now checked it at that venue, a little heart shows in the bottom right corner of her/his profile picture revealing that user's appreciation of the specific venue.
 
 ---
