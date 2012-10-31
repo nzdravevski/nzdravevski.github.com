@@ -19,7 +19,7 @@ If the user has added a photo to her check in, this photo is shown on the feed a
 
 2. Unique Pull To Refresh Design
 ---
-{% img center /images/posts_images/IMG_1780.png 640 466 PullToRefreshDesign %}
+{% img center /images/posts_images/IMG_1780.PNG 640 466 PullToRefreshDesign %}
 We all know the default/Tweetie-like `Pull To Refresh` control that is used widely across iOS apps and that only features text, a direction changing arrow i.e. nothing original and has even become boring nowadays. Exception is the Apple implementation of its very own Pull To Refresh mechanism that can be found in the stock Mail app under iOS 6 and foursquare's Pull To Refresh control. They really did a great job here simply by providing a crown image that is shown only if the user kind of overscrolls the refresh control. Fells good when that mayor crown shows up all of a sudden and totally unexpected.
 
 On this picture one can also notice the great rounded edges on the `UINavigationBar`'s top corners (just below the status bar). I totally like this design.   
