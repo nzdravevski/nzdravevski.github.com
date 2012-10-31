@@ -4,7 +4,7 @@
   <title><![CDATA[Nikola Zdravevski's Blog]]></title>
   <link href="http://nzdravevski.github.com/atom.xml" rel="self"/>
   <link href="http://nzdravevski.github.com/"/>
-  <updated>2012-10-31T21:26:16+01:00</updated>
+  <updated>2012-10-31T21:39:58+01:00</updated>
   <id>http://nzdravevski.github.com/</id>
   <author>
     <name><![CDATA[Nikola Zdravevski]]></name>
@@ -26,29 +26,29 @@
 
 <h2>1. UIImageView Background Image</h2>
 
-<p><img class="center" src="http://nzdravevski.github.com/images/posts_images/IMG_1784.png" width="640" height="608" title="UIImageViewBackgroundImage" >
+<p><img class="center" src="http://nzdravevski.github.com/images/posts_images/checkinphoto.png" width="640" height="608" title="UIImageViewBackgroundImage" >
 If the user has added a photo to her check in, this photo is shown on the feed as a horizontally scrollable image that hides a girl with a camera in the background.</p>
 
 <h2>2. Unique Pull To Refresh Design</h2>
 
-<p><img class="center" src="http://nzdravevski.github.com/images/posts_images/IMG_1780.png" width="640" height="466" title="PullToRefreshDesign" >
+<p><img class="center" src="http://nzdravevski.github.com/images/posts_images/pulltorefresh.png" width="640" height="466" title="PullToRefreshDesign" >
 We all know the default/Tweetie-like <code>Pull To Refresh</code> control that is used widely across iOS apps and that only features text, a direction changing arrow i.e. nothing original and has even become boring nowadays. Exception is the Apple implementation of its very own Pull To Refresh mechanism that can be found in the stock Mail app under iOS 6 and foursquare&#8217;s Pull To Refresh control. They really did a great job here simply by providing a crown image that is shown only if the user kind of overscrolls the refresh control. Fells good when that mayor crown shows up all of a sudden and totally unexpected.</p>
 
 <p>On this picture one can also notice the great rounded edges on the <code>UINavigationBar</code>&#8217;s top corners (just below the status bar). I totally like this design.</p>
 
 <h2>3. Custom UISwitch</h2>
 
-<p><img class="center" src="http://nzdravevski.github.com/images/posts_images/IMG_1783.png" width="640" height="383" title="CustomUISwitch" >
+<p><img class="center" src="http://nzdravevski.github.com/images/posts_images/switch.png" width="640" height="383" title="CustomUISwitch" >
 This is by far my favorite social network sharing switch. I love it because of its minimal and pure perfection. When the user turns a switch <em>on</em> it instantly becomes more vivid simply by tinting itself in the color associated with the social network the switch represents.</p>
 
 <h2>4. UITabBarItem Title</h2>
 
-<p><img class="center" src="http://nzdravevski.github.com/images/posts_images/IMG_1786.png" width="218" height="101" title="UITabBarItemTitle" >
+<p><img class="center" src="http://nzdravevski.github.com/images/posts_images/tabbaritemname.png" width="218" height="101" title="UITabBarItemTitle" >
 <code>UITabBarItem</code> names are really important aspect of the app design and should be chosen <strong>very</strong> carefully and wisely because they will be shown at all times the user is using the application. That said, foursquare has chosen a great and original way of naming their user account tab bar item and instead of boring and traditional names like <em>Profile</em>, <em>Account</em> or <em>User</em> they have named their tab bar item after the user&#8217;s first name. Cool and very user friendly.</p>
 
 <h2>5. Venue Likes</h2>
 
-<p><img class="center" src="http://nzdravevski.github.com/images/posts_images/IMG_1462.png" width="640" height="242" title="VenueLikes" >
+<p><img class="center" src="http://nzdravevski.github.com/images/posts_images/venuelike.png" width="640" height="242" title="VenueLikes" >
 If the user has liked a venue and is now checked it at that venue, a little heart shows in the bottom right corner of her/his profile picture revealing that user&#8217;s appreciation of the specific venue.</p>
 
 <hr />
