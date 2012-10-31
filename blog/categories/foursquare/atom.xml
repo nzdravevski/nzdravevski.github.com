@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: iOS | Nikola Zdravevski's Blog]]></title>
-  <link href="http://nzdravevski.github.com/blog/categories/ios/atom.xml" rel="self"/>
+  <title><![CDATA[Category: foursquare | Nikola Zdravevski's Blog]]></title>
+  <link href="http://nzdravevski.github.com/blog/categories/foursquare/atom.xml" rel="self"/>
   <link href="http://nzdravevski.github.com/"/>
   <updated>2012-10-31T21:08:36+01:00</updated>
   <id>http://nzdravevski.github.com/</id>
@@ -56,49 +56,6 @@ If the user has liked a venue and is now checked it at that venue, a little hear
 <p>In a conclusion, foursquare is a great app with an awesome, beautiful and user oriented design. I use it regularly both for checking in and for inspirational iOS app design ideas.</p>
 
 <p>Thanks for reading this.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[UINavigationController Back Button Custom Action (Quick Tip)]]></title>
-    <link href="http://nzdravevski.github.com/blog/2012/07/23/uinavigationcontroller-back-button-custom-action-quick-tip/"/>
-    <updated>2012-07-23T19:12:00+02:00</updated>
-    <id>http://nzdravevski.github.com/blog/2012/07/23/uinavigationcontroller-back-button-custom-action-quick-tip</id>
-    <content type="html"><![CDATA[<p>We all know the good, old <code>UINavigationController</code> that is used in almost every iOS application. <code>UINavigationController</code> has a default action when back button is pressed on one of its stack's view controllers i.e. - go back one level in the navigation stack. However, there are cases when we need to do something extra when back button is pressed. <!-- more --> For example - <em>and this is just an example usage</em>, if we want to mimic combo box - like control in iOS (which is usually implemented via single, right detail <code>UITableViewCell</code> in the parent = table view cell with style <code>UITableViewCellStyleValue1</code>) and we do the selection by pushing a new, child view controller with a checkbox enabled <code>UITableView</code>.</p>
-
-<p><img class="left" src="/images/posts_images/tableviewselection.png" width="618" height="569" title="Settings.app" > Such an implementation can be found in the stock Settings.app if we choose Sounds and if we take a look at the Ringtone right detail UITableViewCell. That is a combo box - like structure and selecting it brings a new, child view controller with selection logic.</p>
-
-<br />    
-
-
-<br />    
-
-
-<br />     
-
-
-<p>In such a scenario, what I like to do is set the parent's right detail <code>UITableViewCell</code> with the selected value from the child <code>UITableView</code> when the back button on the child view controller is pressed. That way I don't have to set the selected value on every selection user does in the child UITableView (at <code>tableView: didSelectRowAtIndexPath:</code> with a call to the delegate) so I only do the setting once, at the end. I was having trouble finding the <em>right &amp; correct</em> place to put the delegate call that sets the selected value on the parent and finally after some thinking around, I ended up with this awesome spot to put your back button action call.</p>
-
-<p>```objc Where to put your back button action method call
-- (void)viewWillDisappear:(BOOL)animated
-{</p>
-
-<pre><code>if ([self.navigationController.viewControllers indexOfObject:self] == NSNotFound) {
-    [self.delegate setParentSelectedCity:self.selectedCity];
-}
-[super viewWillDisappear:animated];
-</code></pre>
-
-<p>}
-```</p>
-
-<p>This code should be put in the child view controller and it <strong>ensures</strong> us that back button has been pressed because <code>self</code> is no longer in the <code>UINavigationController</code> stack. What I also have here is my <code>setParentSelectedCity:</code> delegate method that sets the parent's right detail <code>UITableViewCell</code>. <code>self.selectedCity</code> is a property that holds the selected value by the user.</p>
-
-<hr />
-
-<p>Of course, you can put whatever method call you want on that place.</p>
-
-<p>Thanks for reading my post, I hope it may be of any help.</p>
 ]]></content>
   </entry>
   
